@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schema/user.schema';
 import { CreateUserDto } from 'src/user/dtos/createUser.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -10,16 +11,23 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      const createdUser = new this.userModel(createUserDto);
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
+      const user = new this.userModel({
+        ...createUserDto,
+        password: hashedPassword
+      });
+
+      const createdUser = new this.userModel(user);
       return createdUser.save();
     } catch (error) {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         error: "error.message",
-      }, HttpStatus.BAD_REQUEST, {
+      }, HttpStatus.BAD_REQUEST,{
         cause: "error"
       })
     }
+  }
 
   }
 
