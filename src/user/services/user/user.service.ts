@@ -3,7 +3,9 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schema/user.schema';
 import { CreateUserDto } from 'src/user/dtos/createUser.dto';
+import { LoginUserDto } from 'src/user/dtos/loginUser.dto';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
@@ -29,6 +31,26 @@ export class UserService {
     }
   }
 
+  async login(loginUserDto: LoginUserDto): Promise<any> {
+    const user = await this.userModel.findOne({ email: loginUserDto.email }).exec();
+    if(!user) {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: "Invalid credentials",
+      }, HttpStatus.BAD_REQUEST)
+    }
+
+    const isPasswordMatching = await bcrypt.compare(loginUserDto.password, user.password);
+
+    if(!isPasswordMatching) {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: "Invalid password",
+      }, HttpStatus.BAD_REQUEST)
+    }
+
+    const token = jwt.sign({ userId: user.id}, 'secret', { expiresIn: '1h' });
+    return { token }
   }
 
   async findAll(): Promise<User[]> {
