@@ -22,6 +22,9 @@ export class BlogService {
         ...createBlogDto,
         user: user
       });
+
+      await this.userModel.findOneAndUpdate({ _id: createBlogDto.userId }, { $push: { blogPosts: createdBlog } }, { new: true }).exec();
+
       return createdBlog.save();
     } catch (error) {
       throw new HttpException("Someting went wrong", HttpStatus.BAD_REQUEST)
