@@ -43,4 +43,25 @@ export class BlogService {
     await this.userModel.findOneAndUpdate({ blogPosts: id }, { $pull: { blogPosts: id } }).exec();
     return await this.blogModel.deleteOne({ _id: id }).exec();
   }
+
+  async likeOne(id: string, userId: string): Promise<any> {
+    const blog = await this.blogModel.findOne({ _id: id }).exec();
+    if(!blog) {
+      throw new HttpException("Blog not found", HttpStatus.BAD_REQUEST)
+    }
+    const user = await this.userModel.findOne({ _id: userId }).exec();
+    if(!user) {
+      throw new HttpException("User not found", HttpStatus.BAD_REQUEST)
+    }
+    const isLiked = blog.likes.map(like => like.toString()).includes(user._id.toString())
+
+    if(isLiked) {
+      await this.blogModel.findOneAndUpdate({ _id: id }, { $pull: { likes: user._id } }, { new: true }).exec();
+      return await this.userModel.findOneAndUpdate({ _id: userId }, { $pull: { likedPosts: blog._id } }, { new: true }).exec();
+    } else {
+      await this.blogModel.findOneAndUpdate({ _id: id }, { $push: { likes: user } }, { new: true }).exec();
+      return await this.userModel.findOneAndUpdate({ _id: userId }, { $push: { likedPosts: blog } }, { new: true }).exec();
+    }
+
+  }
 }

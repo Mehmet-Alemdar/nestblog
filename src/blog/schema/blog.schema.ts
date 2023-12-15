@@ -19,8 +19,8 @@ export class Blog {
   @Prop({ type: Date, default: Date.now})
   createdAt: Date;
 
-  @Prop({ type: Number, default: 0})
-  likes: number;
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'User', default: []})
+  likes: User[];
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

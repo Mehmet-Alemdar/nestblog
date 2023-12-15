@@ -27,4 +27,9 @@ export class BlogController {
   deleteOne(@Param("id") id: string): Promise<any> {
     return this.blogService.deleteOne(id);
   }
+
+  @Get('likeOne/:id/:userId')
+  likeOne(@Param("id") id: string, @Param("userId") userId: string): Promise<any> {
+    return this.blogService.likeOne(id, userId);
+  }
 }
