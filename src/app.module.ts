@@ -17,6 +17,10 @@ export class AppModule implements NestModule {
       {
         path: 'user/findAll',
         method: RequestMethod.GET
+      },
+      {
+        path: 'blog',
+        method: RequestMethod.ALL
       }
     );
   }
