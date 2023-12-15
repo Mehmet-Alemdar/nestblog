@@ -1,4 +1,4 @@
-import { Controller, UsePipes, Get, ValidationPipe, Body, Param } from '@nestjs/common';
+import { Controller, UsePipes, Get, ValidationPipe, Body, Param, Post } from '@nestjs/common';
 import { BlogService } from 'src/blog/service/blog/blog.service';
 import { CreateBlogDto } from 'src/blog/dtos/createBlog.dto';
 import { Blog } from 'src/blog/schema/blog.schema';
@@ -21,5 +21,10 @@ export class BlogController {
   @Get('findOne/:id')
   findOne(@Param("id") id: string): Promise<Blog> {
     return this.blogService.findOne(id);
+  }
+
+  @Get('deleteOne/:id')
+  deleteOne(@Param("id") id: string): Promise<any> {
+    return this.blogService.deleteOne(id);
   }
 }

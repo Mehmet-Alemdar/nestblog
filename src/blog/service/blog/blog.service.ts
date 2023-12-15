@@ -36,7 +36,11 @@ export class BlogService {
   }
 
   async findOne(id: string): Promise<Blog> {
-    console.log(id)
     return await this.blogModel.findOne({ _id: id }).exec();
+  }
+
+  async deleteOne(id: string): Promise<any> {
+    await this.userModel.findOneAndUpdate({ blogPosts: id }, { $pull: { blogPosts: id } }).exec();
+    return await this.blogModel.deleteOne({ _id: id }).exec();
   }
 }
