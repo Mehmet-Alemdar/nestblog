@@ -7,7 +7,7 @@ import { Blog } from 'src/blog/schema/blog.schema';
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
-  @Get()
+  @Post()
   @UsePipes(new ValidationPipe())
   create(@Body() createBlogDto: CreateBlogDto): Promise<Blog> {
     return this.blogService.create(createBlogDto);
