@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schema/user.schema';
@@ -59,5 +59,11 @@ export class UserService {
 
   async findOne(id: string): Promise<User> {
     return await this.userModel.findOne({ _id: id }).exec();
+  }
+
+  async updateProfilePicture(id: string, profilePicture: string): Promise<string> {
+    const user = await this.userModel.findOneAndUpdate({ _id: id }, { profilePicture: profilePicture }, { new: true }).exec();
+    const newProfilePicture = user.profilePicture;
+    return newProfilePicture;
   }
 }
