@@ -7,7 +7,7 @@ import { AuthenticationMiddleware } from './middlewares/authentication/authentic
 import { BlogModule } from './blog/blog.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost:27017/nestblog'), UserModule, BlogModule],
+  imports: [MongooseModule.forRoot(process.env.DB_URL), UserModule, BlogModule],
   controllers: [AppController],
   providers: [AppService],
 })
