@@ -1,4 +1,4 @@
-import { Controller, UsePipes, Get, ValidationPipe, Body, Param, Post } from '@nestjs/common';
+import { Controller, UsePipes, Get, ValidationPipe, Body, Param, Post, Delete, Patch } from '@nestjs/common';
 import { BlogService } from 'src/blog/service/blog/blog.service';
 import { CreateBlogDto } from 'src/blog/dtos/createBlog.dto';
 import { Blog } from 'src/blog/schema/blog.schema';
@@ -23,12 +23,12 @@ export class BlogController {
     return this.blogService.findOne(id);
   }
 
-  @Get('deleteOne/:id')
+  @Delete('deleteOne/:id')
   deleteOne(@Param("id") id: string): Promise<any> {
     return this.blogService.deleteOne(id);
   }
 
-  @Get('likeOne/:id/:userId')
+  @Patch('likeOne/:id/:userId')
   likeOne(@Param("id") id: string, @Param("userId") userId: string): Promise<any> {
     return this.blogService.likeOne(id, userId);
   }
