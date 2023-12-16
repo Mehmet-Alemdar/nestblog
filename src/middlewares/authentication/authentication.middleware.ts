@@ -20,7 +20,6 @@ export class AuthenticationMiddleware implements NestMiddleware {
     try {
       const verified = jwt.verify(token, "secret");
       req.user = verified;
-      console.log(verified);
       next();
     } catch (error) {
      throw new HttpException("Not authorized.", HttpStatus.UNAUTHORIZED);   
