@@ -6,9 +6,9 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop({ required: true, type: String})
+  @Prop({ required: true, type: String, default: 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'})
   profilePicture: string;
-  
+
   @Prop({ required: true, type: String})
   name: string;
 
@@ -21,10 +21,10 @@ export class User {
   @Prop({ required: true, type: Number})
   age: number;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' })
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Blog', default: [] })
   blogPosts: Blog[];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' })
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Blog', default: [] })
   likedPosts: Blog[];
 }
 
