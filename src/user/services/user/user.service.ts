@@ -22,7 +22,7 @@ export class UserService {
       const createdUser = new this.userModel(user);
       return createdUser.save();
     } catch (error) {
-      throw new HttpException({
+      throw new HttpException({ 
         status: HttpStatus.BAD_REQUEST,
         error: "error.message",
       }, HttpStatus.BAD_REQUEST,{
@@ -55,5 +55,9 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
+  }
+
+  async findOne(id: string): Promise<User> {
+    return await this.userModel.findOne({ _id: id }).exec();
   }
 }
