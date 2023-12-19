@@ -11,7 +11,7 @@ import * as jwt from 'jsonwebtoken';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<any> {
     try {
       const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
       const user = new this.userModel({
@@ -19,8 +19,9 @@ export class UserService {
         password: hashedPassword
       });
 
-      const createdUser = new this.userModel(user);
-      return createdUser.save();
+      const createdUser = await new this.userModel(user).save();
+      const token = await jwt.sign({ userId: createdUser.id}, 'secret', { expiresIn: '1h' });
+      return {token , id: createdUser.id}
     } catch (error) {
       throw new HttpException({ 
         status: HttpStatus.BAD_REQUEST,
@@ -50,7 +51,7 @@ export class UserService {
     }
 
     const token = jwt.sign({ userId: user.id}, 'secret', { expiresIn: '1h' });
-    return { token }
+    return { token, id: user.id }
   }
 
   async findAll(): Promise<User[]> {
