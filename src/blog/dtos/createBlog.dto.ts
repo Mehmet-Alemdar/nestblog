@@ -12,4 +12,12 @@ export class CreateBlogDto {
   @IsNotEmpty()
   @IsString()
   userId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  topic: string;
+
+  @IsNotEmpty()
+  @IsString()
+  image: string;
 }

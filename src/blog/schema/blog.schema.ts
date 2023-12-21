@@ -13,6 +13,12 @@ export class Blog {
   @Prop({ required: true, type: String})
   content: string;
 
+  @Prop({ required: true, type: String})
+  topic: string;
+
+  @Prop({ required: true, type: String})
+  image: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User'})
   user: User;
 
