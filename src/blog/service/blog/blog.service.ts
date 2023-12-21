@@ -32,11 +32,11 @@ export class BlogService {
   }
 
   async findAll(): Promise<Blog[]> {
-    return this.blogModel.find().exec();
+    return this.blogModel.find().populate('user').exec();
   }
 
   async findOne(id: string): Promise<Blog> {
-    return await this.blogModel.findOne({ _id: id }).exec();
+    return await this.blogModel.findOne({ _id: id }).populate('user').exec();
   }
 
   async deleteOne(id: string): Promise<any> {

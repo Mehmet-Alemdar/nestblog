@@ -59,7 +59,7 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<User> {
-    return await this.userModel.findOne({ _id: id }).exec();
+    return await this.userModel.findOne({ _id: id }).populate('blogPosts').populate('likedPosts').exec();
   }
 
   async updateProfilePicture(id: string, profilePicture: string): Promise<string> {
